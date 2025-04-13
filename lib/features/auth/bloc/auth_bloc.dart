@@ -1,22 +1,33 @@
-import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:news_application/core/services/hive_database_service.dart';
 import 'package:news_application/features/auth/models/user_model.dart';
 import 'package:news_application/features/utils/app_texts.dart';
+import 'package:news_application/my_bloc/private_bloc.dart';
 part 'auth_event.dart';
 part 'auth_state.dart';
 
-class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthBloc() : super(AuthInitial()) {
-    on<AuthEvent>((event, emit) {});
-    on<SignUpEvent>(signUp);
-    on<SignInEvent>(signIn);
-    on<DeleteUserEvent>(deleteUser);
-    on<CheckUserAuth>(checkUserAuth);
+class AuthBloc extends PrivateBloc<AuthEvent, AuthState> {
+  AuthBloc() : super(AuthInitial());
+
+  @override
+  void listener(AuthEvent event) {
+    switch (event) {
+      case SignUpEvent _:
+        signUp(event);
+      case SignInEvent _:
+        signIn(event);
+      case DeleteUserEvent _:
+        deleteUser(event);
+      case CheckUserAuth _:
+        checkUserAuth(event);
+    }
   }
+
   final HiveDatabaseService hiveService = HiveDatabaseService();
 
-  void signUp(SignUpEvent event, Emitter<AuthState> emit) {
+  void signUp(
+    SignUpEvent event,
+  ) {
     emit(AuthLoadingState());
     try {
       hiveService.writeToLocal(userModel: event.userModel);
@@ -26,7 +37,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  void signIn(SignInEvent event, Emitter<AuthState> emit) async {
+  void signIn(
+    SignInEvent event,
+  ) async {
     emit(AuthLoadingState());
     try {
       final UserModel? userModel = hiveService.getUserModel();
@@ -43,11 +56,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  void deleteUser(DeleteUserEvent event, Emitter<AuthState> emit) {
+  void deleteUser(
+    DeleteUserEvent event,
+  ) {
     hiveService.clearUserModel();
   }
 
-  void checkUserAuth(CheckUserAuth event, Emitter<AuthState> emit) async {
+  void checkUserAuth(CheckUserAuth event) async {
     await Future.delayed(Duration(seconds: 3));
     final UserModel? userModel = hiveService.getUserModel();
     if (userModel == null) {

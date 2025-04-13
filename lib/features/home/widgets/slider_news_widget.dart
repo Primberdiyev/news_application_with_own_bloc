@@ -1,12 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_application/features/home/bloc/home_bloc.dart';
 import 'package:news_application/features/home/bloc/home_event.dart';
 import 'package:news_application/features/home/dialogs/news_dialog.dart';
 import 'package:news_application/features/home/models/article_model.dart';
 import 'package:news_application/features/home/widgets/cached_image_widget.dart';
 import 'package:news_application/features/utils/constants.dart';
+import 'package:news_application/my_bloc/my_bloc_ext.dart';
 
 class SliderNewsWidget extends StatelessWidget {
   const SliderNewsWidget({super.key, required this.articles});
@@ -62,7 +62,7 @@ class SliderNewsWidget extends StatelessWidget {
             animateToClosest: true,
             autoPlay: true,
             onPageChanged: (index, reason) {
-              context.read<HomeBloc>().add(ChangeSlideIndexEvent(index));
+              context.getBloc<HomeBloc>().add(ChangeSlideIndexEvent(index));
             },
           ),
         ));

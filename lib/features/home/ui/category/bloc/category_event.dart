@@ -1,6 +1,8 @@
-part of 'category_bloc.dart';
+//part of 'category_bloc.dart';
 
-@immutable
+//@immutable
+import 'package:news_application/features/home/models/article_model.dart';
+
 abstract class CategoryEvent {}
 
 class GetCategoryNewsEvent extends CategoryEvent {

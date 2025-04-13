@@ -4,7 +4,7 @@ import 'package:news_application/my_bloc/my_bloc_provider_inherited.dart';
 extension BlocGetter on BuildContext {
   T getBloc<T>() {
     final provider =
-        dependOnInheritedWidgetOfExactType<MyBlocProviderInherited<T>>();
+        findAncestorWidgetOfExactType<MyBlocProviderInherited<T>>();
     assert(provider != null, 'MyBlocProviderInherited<$T> topilmadi');
     return provider!.bloc;
   }

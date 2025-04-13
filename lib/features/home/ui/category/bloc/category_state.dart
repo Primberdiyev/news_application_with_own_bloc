@@ -1,4 +1,6 @@
-part of 'category_bloc.dart';
+
+
+import 'package:news_application/features/home/models/article_model.dart';
 
 abstract class CategoryState {}
 

@@ -1,6 +1,5 @@
-part of 'profile_bloc.dart';
+import 'package:news_application/features/auth/models/user_model.dart';
 
-@immutable
 abstract class ProfileState {}
 
 class ProfileInitial extends ProfileState {}

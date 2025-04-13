@@ -1,9 +1,10 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_application/features/home/ui/category/bloc/category_bloc.dart';
+import 'package:news_application/features/home/ui/category/bloc/category_event.dart';
 import 'package:news_application/features/utils/app_colors.dart';
 import 'package:news_application/features/utils/app_text_styles.dart';
 import 'package:news_application/features/utils/sort_components.dart';
+import 'package:news_application/my_bloc/my_bloc_ext.dart';
 
 class ChangeCategoryWidget extends StatefulWidget {
   const ChangeCategoryWidget({
@@ -30,7 +31,7 @@ class _ChangeCategoryWidgetState extends State<ChangeCategoryWidget> {
           final bool isSelected = item == widget.selectedItem;
           return GestureDetector(
             onTap: () {
-              context.read<CategoryBloc>().add(GetCategoryNewsEvent(item));
+              context.getBloc<CategoryBloc>().add(GetCategoryNewsEvent(item));
             },
             child: Container(
               margin: EdgeInsets.only(top: 10, bottom: 10, right: 10),

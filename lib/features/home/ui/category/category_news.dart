@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_application/features/home/models/article_model.dart';
 import 'package:news_application/features/home/ui/category/bloc/category_bloc.dart';
+import 'package:news_application/features/home/ui/category/bloc/category_event.dart';
+import 'package:news_application/features/home/ui/category/bloc/category_state.dart';
 import 'package:news_application/features/home/ui/category/widgets/change_category_widget.dart';
 import 'package:news_application/features/home/widgets/failure_widget.dart';
 import 'package:news_application/features/home/widgets/loading_widget.dart';
 import 'package:news_application/features/home/widgets/news_item.dart';
 import 'package:news_application/features/home/widgets/slider_news_widget.dart';
+import 'package:news_application/my_bloc/my_bloc_builder.dart';
+import 'package:news_application/my_bloc/my_bloc_ext.dart';
 
 class CategoryNews extends StatefulWidget {
   const CategoryNews({super.key});
@@ -18,7 +21,7 @@ class CategoryNews extends StatefulWidget {
 class _CategoryNewsState extends State<CategoryNews> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CategoryBloc, CategoryState>(
+    return MyBlocBuilder<CategoryBloc, CategoryState>(
       builder: (context, state) {
         if (state is CategorySuccessState) {
           return Padding(
@@ -43,16 +46,17 @@ class _CategoryNewsState extends State<CategoryNews> {
                     padding: EdgeInsets.zero,
                     itemCount: state.articles?.length,
                     itemBuilder: (context, index) {
-                      final newData = state.articles?[index] ?? ({} as Article);
+                      final newData =
+                          state.articles?[index] ?? ({} as Article);
                       return NewsItem(
                         article: newData,
                         onDelete: () {
-                          context.read<CategoryBloc>().add(
-                                DeleteNewsByIdEvent(article: newData),
-                              );
+                          context
+                              .getBloc<CategoryBloc>()
+                              .add(DeleteNewsByIdEvent(article: newData));
                         },
                         onEdit: (oldArticle, newArticle) {
-                          context.read<CategoryBloc>().add(EditNewsEvent(
+                          context.getBloc<CategoryBloc>().add(EditNewsEvent(
                               editedArticle: newArticle,
                               lastArticle: oldArticle));
                         },

@@ -1,9 +1,11 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_application/features/home/bloc/home_bloc.dart';
 import 'package:news_application/features/home/bloc/home_event.dart';
+import 'package:news_application/features/home/bloc/home_state.dart';
 import 'package:news_application/features/utils/app_colors.dart';
 import 'package:news_application/features/utils/app_text_styles.dart';
+import 'package:news_application/my_bloc/my_bloc_builder.dart';
+import 'package:news_application/my_bloc/my_bloc_ext.dart';
 
 import '../../utils/sort_components.dart';
 
@@ -16,7 +18,7 @@ class SelectCategory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final items = SortComponents.categories;
-    return BlocBuilder<HomeBloc, HomeState>(
+    return MyBlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         return SizedBox(
           height: 70,
@@ -31,7 +33,7 @@ class SelectCategory extends StatelessWidget {
                   item;
               return GestureDetector(
                 onTap: () {
-                  context.read<HomeBloc>().add(ChangeCategoryEvent(item));
+                  context.getBloc<HomeBloc>().add(ChangeCategoryEvent(item));
                 },
                 child: Container(
                   margin: EdgeInsets.only(top: 10, bottom: 10, right: 10),

@@ -1,6 +1,8 @@
-part of 'home_bloc.dart';
 
-@immutable
+import 'package:news_application/features/auth/models/user_model.dart';
+import 'package:news_application/features/home/models/article_model.dart';
+import 'package:news_application/features/home/models/country_model.dart';
+
 abstract class HomeState {}
 
 class HomeInitial extends HomeState {}

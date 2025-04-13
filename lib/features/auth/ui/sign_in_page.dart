@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_application/core/ui_kit/custom_text_field.dart';
 import 'package:news_application/features/auth/bloc/auth_bloc.dart';
 import 'package:news_application/features/auth/widgets/continue_button.dart';
@@ -8,7 +7,8 @@ import 'package:news_application/features/routes/name_routes.dart';
 import 'package:news_application/features/utils/app_colors.dart';
 import 'package:news_application/features/utils/app_text_styles.dart';
 import 'package:news_application/features/utils/app_texts.dart';
-
+import 'package:news_application/my_bloc/my_bloc_consumer.dart';
+import 'package:news_application/my_bloc/my_bloc_ext.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -29,7 +29,7 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthBloc, AuthState>(
+    return MyBlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthSuccessState) {
           Navigator.pushReplacementNamed(context, NameRoutes.home);
@@ -62,7 +62,7 @@ class _SignInPageState extends State<SignInPage> {
                 ),
                 ContinueButton(
                   function: () {
-                    context.read<AuthBloc>().add(SignInEvent(
+                    context.getBloc<AuthBloc>().add(SignInEvent(
                           email: emailController.text,
                           password: passwordController.text,
                         ));

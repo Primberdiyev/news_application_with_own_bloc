@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_application/features/home/bloc/home_bloc.dart';
+import 'package:news_application/features/home/bloc/home_state.dart';
 import 'package:news_application/features/utils/app_colors.dart';
+import 'package:news_application/my_bloc/my_bloc_builder.dart';
 
 
 class ActionButton extends StatelessWidget {
@@ -14,7 +15,7 @@ class ActionButton extends StatelessWidget {
   final VoidCallback function;
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
+    return MyBlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         return Visibility(
           visible: (state is! HomeLoadingState),

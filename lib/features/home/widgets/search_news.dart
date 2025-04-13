@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_application/features/home/bloc/home_bloc.dart';
 import 'package:news_application/features/home/bloc/home_event.dart';
 import 'package:news_application/features/utils/app_colors.dart';
+import 'package:news_application/my_bloc/my_bloc_ext.dart';
 
 class SearchNews extends StatefulWidget {
   const SearchNews({
@@ -23,7 +23,7 @@ class _SearchNewsState extends State<SearchNews> {
   }
 
   void _onSearchChanged(String value) {
-    context.read<HomeBloc>().add(FilterNewsEvent(controller.text));
+    context.getBloc<HomeBloc>().add(FilterNewsEvent(controller.text));
   }
 
   @override

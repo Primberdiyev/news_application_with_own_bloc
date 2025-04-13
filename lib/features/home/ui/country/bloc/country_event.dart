@@ -1,6 +1,7 @@
-part of 'country_bloc.dart';
 
-@immutable
+import 'package:news_application/features/home/models/article_model.dart';
+import 'package:news_application/features/home/models/country_model.dart';
+
 abstract class CountryEvent {}
 
 class GetCountryNewsEvent extends CountryEvent {

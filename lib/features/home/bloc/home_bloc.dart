@@ -1,28 +1,70 @@
 import 'dart:developer';
-import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
 import 'package:news_application/core/services/hive_database_service.dart';
 import 'package:news_application/core/services/isar_database_service.dart';
-import 'package:news_application/features/auth/models/user_model.dart';
 import 'package:news_application/features/home/bloc/home_event.dart';
-import 'package:news_application/features/home/models/article_model.dart';
-import 'package:news_application/features/home/models/country_model.dart';
+import 'package:news_application/features/home/bloc/home_state.dart';
 import 'package:news_application/features/home/repositories/news_repositories.dart';
 import 'package:news_application/features/utils/sort_components.dart';
-part 'home_state.dart';
+import 'package:news_application/my_bloc/private_bloc.dart';
 
-class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  HomeBloc() : super(HomeInitial()) {
-    on<HomeEvent>((event, emit) {});
-    on<DeleteNewsByIdEvent>(deleteNewsById);
-    on<EditNewsEvent>(editNews);
-    on<RefleshNewsEvent>(refleshNews);
-    on<PickImageEvent>(pickImage);
-    on<CreateNewArticle>(createNewArticle);
-    on<ChangeCategoryEvent>(changeCategory);
-    on<ChangeSlideIndexEvent>(changeSliderIndex);
-    on<GetTeslaNewEvent>(getTeslaNews);
-    on<FilterNewsEvent>(filterNews);
+class HomeBloc extends PrivateBloc<HomeEvent, HomeState> {
+  HomeBloc() : super(HomeInitial());
+
+  @override
+  void listener(HomeEvent event) {
+    switch (event) {
+      case DeleteNewsByIdEvent():
+        deleteNewsById(event);
+        break;
+
+      case EditNewsEvent():
+        editNews(
+          event,
+        );
+        break;
+
+      case RefleshNewsEvent():
+        refleshNews(
+          event,
+        );
+        break;
+
+      case PickImageEvent():
+        pickImage(
+          event,
+        );
+        break;
+
+      case CreateNewArticle():
+        createNewArticle(
+          event,
+        );
+        break;
+
+      case ChangeCategoryEvent():
+        changeCategory(
+          event,
+        );
+        break;
+
+      case ChangeSlideIndexEvent():
+        changeSliderIndex(
+          event,
+        );
+        break;
+
+      case GetTeslaNewEvent():
+        getTeslaNews(
+          event,
+        );
+        break;
+
+      case FilterNewsEvent():
+        filterNews(
+          event,
+        );
+        break;
+    }
   }
 
   final IsarDatabaseService databaseService = IsarDatabaseService();
@@ -32,7 +74,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final HiveDatabaseService hiveDatabaseService = HiveDatabaseService();
 
   void deleteNewsById(
-      DeleteNewsByIdEvent event, Emitter<HomeState> emit) async {
+    DeleteNewsByIdEvent event,
+  ) async {
     databaseService.deleteNewsById(id: event.article.id);
     if (state is HomeSuccessState) {
       final currentState = state as HomeSuccessState;
@@ -42,7 +85,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
   }
 
-  void editNews(EditNewsEvent event, Emitter<HomeState> emit) async {
+  void editNews(
+    EditNewsEvent event,
+  ) async {
     await databaseService.editNews(article: event.editedArticle);
     if (state is HomeSuccessState) {
       final currentState = state as HomeSuccessState;
@@ -52,14 +97,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
   }
 
-  void refleshNews(RefleshNewsEvent event, Emitter<HomeState> emit) async {
+  void refleshNews(
+    RefleshNewsEvent event,
+  ) async {
     if (state is HomeSuccessState) {
       await databaseService.clearDatabase();
       add(GetTeslaNewEvent());
     }
   }
 
-  void pickImage(PickImageEvent event, Emitter<HomeState> emit) async {
+  void pickImage(PickImageEvent event) async {
     final currentState = state;
     emit(HomeLoadingState());
     final imageLink = await newsRepositories.getImageLink();
@@ -72,7 +119,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
   }
 
-  void createNewArticle(CreateNewArticle event, Emitter<HomeState> emit) async {
+  void createNewArticle(
+    CreateNewArticle event,
+  ) async {
     final successState = state as HomeSuccessState;
     emit(HomeLoadingState());
     try {
@@ -84,19 +133,25 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
   }
 
-  void changeCategory(ChangeCategoryEvent event, Emitter<HomeState> emit) {
+  void changeCategory(
+    ChangeCategoryEvent event,
+  ) {
     if (state is HomeSuccessState) {
       final currentstate = state as HomeSuccessState;
       emit(currentstate.copyWith(selectedCategory: event.category));
     }
   }
 
-  void changeSliderIndex(ChangeSlideIndexEvent event, Emitter<HomeState> emit) {
+  void changeSliderIndex(
+    ChangeSlideIndexEvent event,
+  ) {
     final currentState = state as HomeSuccessState;
     emit(currentState.copyWith(currentSlideIndex: event.slideIndex));
   }
 
-  void getTeslaNews(GetTeslaNewEvent event, Emitter<HomeState> emit) async {
+  void getTeslaNews(
+    GetTeslaNewEvent event,
+  ) async {
     emit(HomeLoadingState());
 
     try {
@@ -109,7 +164,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
   }
 
-  void filterNews(FilterNewsEvent event, Emitter<HomeState> emit) {
+  void filterNews(
+    FilterNewsEvent event,
+  ) {
     if (state is HomeSuccessState) {
       final currentState = state as HomeSuccessState;
       final news = currentState.originalArticles;

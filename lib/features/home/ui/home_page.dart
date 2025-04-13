@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_application/features/home/bloc/home_bloc.dart';
 import 'package:news_application/features/home/bloc/home_event.dart';
+import 'package:news_application/features/home/bloc/home_state.dart';
 import 'package:news_application/features/home/ui/category/bloc/category_bloc.dart';
+import 'package:news_application/features/home/ui/category/bloc/category_event.dart';
 import 'package:news_application/features/home/ui/category/category_news.dart';
 import 'package:news_application/features/home/ui/country/bloc/country_bloc.dart';
+import 'package:news_application/features/home/ui/country/bloc/country_event.dart';
 import 'package:news_application/features/home/ui/country/country_news.dart';
 import 'package:news_application/features/home/ui/profile/profile.dart';
 import 'package:news_application/features/home/ui/tesla_news/tesla_news.dart';
@@ -14,6 +16,8 @@ import 'package:news_application/features/utils/app_colors.dart';
 import 'package:news_application/features/utils/app_images.dart';
 import 'package:news_application/features/utils/app_texts.dart';
 import 'package:news_application/features/utils/sort_components.dart';
+import 'package:news_application/my_bloc/my_bloc_builder.dart';
+import 'package:news_application/my_bloc/my_bloc_ext.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -42,7 +46,7 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.only(left: 20, right: 20, top: 80),
             child: FilteredByWidget(),
           ),
-          BlocBuilder<HomeBloc, HomeState>(
+          MyBlocBuilder<HomeBloc, HomeState>(
             builder: (context, state) {
               if (state is HomeErrorState) {
                 return Center(
@@ -87,7 +91,7 @@ class _HomePageState extends State<HomePage> {
                 IconButton(
                   onPressed: () {
                     pageController.jumpToPage(0);
-                    context.read<HomeBloc>().add(GetTeslaNewEvent());
+                    context.getBloc<HomeBloc>().add(GetTeslaNewEvent());
                   },
                   icon: Icon(
                     Icons.search,
@@ -99,7 +103,7 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () {
                     pageController.jumpToPage(1);
 
-                    context.read<CategoryBloc>().add(GetCategoryNewsEvent(
+                    context.getBloc<CategoryBloc>().add(GetCategoryNewsEvent(
                           AppTexts.technology,
                         ));
                   },
@@ -110,14 +114,14 @@ class _HomePageState extends State<HomePage> {
                     color: value == 1 ? AppColors.blue : Colors.black,
                   ),
                 ),
-                // SizedBox(
-                //   width: 30,
-                // ),
+                SizedBox(
+                  width: 30,
+                ),
                 IconButton(
                   onPressed: () {
                     pageController.jumpToPage(2);
 
-                    context.read<CountryBloc>().add(GetCountryNewsEvent(
+                    context.getBloc<CountryBloc>().add(GetCountryNewsEvent(
                         SortComponents.countryComponents.first));
                   },
                   icon: Image.asset(

@@ -1,6 +1,6 @@
-part of 'profile_bloc.dart';
 
-@immutable
+import 'package:news_application/features/auth/models/user_model.dart';
+
 abstract class ProfileEvent {}
 
 class GetUserModel extends ProfileEvent {}

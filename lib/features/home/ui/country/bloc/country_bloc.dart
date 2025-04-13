@@ -1,25 +1,30 @@
-import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
 import 'package:news_application/core/services/hive_database_service.dart';
 import 'package:news_application/core/services/isar_database_service.dart';
-import 'package:news_application/features/home/models/article_model.dart';
-import 'package:news_application/features/home/models/country_model.dart';
 import 'package:news_application/features/home/repositories/news_repositories.dart';
-part 'country_event.dart';
-part 'country_state.dart';
+import 'package:news_application/features/home/ui/country/bloc/country_event.dart';
+import 'package:news_application/features/home/ui/country/bloc/country_state.dart';
+import 'package:news_application/my_bloc/private_bloc.dart';
 
-class CountryBloc extends Bloc<CountryEvent, CountryState> {
-  CountryBloc() : super(CountryInitial()) {
-    on<GetCountryNewsEvent>(getCountryNews);
-    on<EditCountryNewsEvent>(editNews);
-    on<DeleteCountryNewsByIdEvent>(deleteNewsById);
+class CountryBloc extends PrivateBloc<CountryEvent, CountryState> {
+  CountryBloc() : super(CountryInitial());
+
+  @override
+  void listener(CountryEvent event) {
+    switch (event) {
+      case GetCountryNewsEvent _:
+        getCountryNews(event);
+      case DeleteCountryNewsByIdEvent _:
+        deleteNewsById(event);
+      case EditCountryNewsEvent _:
+        editNews(event);
+    }
   }
+
   final IsarDatabaseService databaseService = IsarDatabaseService();
   final NewsRepositories newsRepositories = NewsRepositories();
   final HiveDatabaseService hiveDatabaseService = HiveDatabaseService();
 
-  void getCountryNews(
-      GetCountryNewsEvent event, Emitter<CountryState> emit) async {
+  void getCountryNews(GetCountryNewsEvent event) async {
     final currentState = state;
     emit(CountryLoadingState());
     try {
@@ -44,8 +49,7 @@ class CountryBloc extends Bloc<CountryEvent, CountryState> {
     }
   }
 
-  void deleteNewsById(
-      DeleteCountryNewsByIdEvent event, Emitter<CountryState> emit) async {
+  void deleteNewsById(DeleteCountryNewsByIdEvent event) async {
     databaseService.deleteNewsById(id: event.article.id);
     if (state is CountrySuccessState) {
       final currentState = state as CountrySuccessState;
@@ -55,7 +59,7 @@ class CountryBloc extends Bloc<CountryEvent, CountryState> {
     }
   }
 
-  void editNews(EditCountryNewsEvent event, Emitter<CountryState> emit) async {
+  void editNews(EditCountryNewsEvent event) async {
     await databaseService.editNews(article: event.editedArticle);
     if (state is CountrySuccessState) {
       final currentState = state as CountrySuccessState;

@@ -1,10 +1,11 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_application/features/home/models/country_model.dart';
 import 'package:news_application/features/home/ui/country/bloc/country_bloc.dart';
+import 'package:news_application/features/home/ui/country/bloc/country_event.dart';
 import 'package:news_application/features/utils/app_colors.dart';
 import 'package:news_application/features/utils/app_text_styles.dart';
 import 'package:news_application/features/utils/sort_components.dart';
+import 'package:news_application/my_bloc/my_bloc_ext.dart';
 
 class ChangeCountryWidget extends StatefulWidget {
   const ChangeCountryWidget({
@@ -31,7 +32,7 @@ class _ChangeCategoryWidgetState extends State<ChangeCountryWidget> {
           final bool isSelected = item.name == widget.selectedItem.name;
           return GestureDetector(
             onTap: () {
-              context.read<CountryBloc>().add(GetCountryNewsEvent(item));
+              context.getBloc<CountryBloc>().add(GetCountryNewsEvent(item));
             },
             child: Container(
               margin: EdgeInsets.only(top: 10, bottom: 10, right: 10),

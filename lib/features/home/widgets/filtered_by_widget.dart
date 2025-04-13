@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_application/features/home/bloc/home_bloc.dart';
+import 'package:news_application/features/home/bloc/home_state.dart';
 import 'package:news_application/features/utils/app_images.dart';
 import 'package:news_application/features/utils/app_text_styles.dart';
 import 'package:news_application/features/utils/app_texts.dart';
+import 'package:news_application/my_bloc/my_bloc_builder.dart';
 
 class FilteredByWidget extends StatefulWidget {
   const FilteredByWidget({super.key});
@@ -17,7 +18,7 @@ class _FiltersWidgetState extends State<FilteredByWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
+    return MyBlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         if (state is HomeSuccessState) {
           return Row(

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_application/core/ui_kit/custom_button.dart';
 import 'package:news_application/core/ui_kit/custom_text_field.dart';
 import 'package:news_application/features/home/bloc/home_bloc.dart';
 import 'package:news_application/features/home/bloc/home_event.dart';
+import 'package:news_application/features/home/bloc/home_state.dart';
 import 'package:news_application/features/home/models/article_model.dart';
 import 'package:news_application/features/home/widgets/select_category.dart';
 import 'package:news_application/features/utils/app_colors.dart';
@@ -11,6 +11,8 @@ import 'package:news_application/features/utils/app_images.dart';
 import 'package:news_application/features/utils/app_text_styles.dart';
 import 'package:news_application/features/utils/app_texts.dart';
 import 'package:news_application/features/utils/sort_components.dart';
+import 'package:news_application/my_bloc/my_bloc_builder.dart';
+import 'package:news_application/my_bloc/my_bloc_ext.dart';
 
 class AddArticlePage extends StatefulWidget {
   const AddArticlePage({super.key});
@@ -27,7 +29,7 @@ class _AddArticleDialogState extends State<AddArticlePage> {
 
   @override
   void initState() {
-    final state = context.read<HomeBloc>().state;
+    final state = context.getBloc<HomeBloc>().state;
     final defaultCategory = SortComponents.categories.first;
     selectedCategory = state is HomeSuccessState
         ? state.selectedCategory ?? defaultCategory
@@ -50,7 +52,7 @@ class _AddArticleDialogState extends State<AddArticlePage> {
       body: ListView(
         padding: EdgeInsets.only(left: 20, right: 20, top: 70),
         children: [
-          BlocBuilder<HomeBloc, HomeState>(
+          MyBlocBuilder<HomeBloc, HomeState>(
             builder: (context, state) {
               final isImageLoaded =
                   (state is HomeSuccessState) && state.pickedImageLink != null;
@@ -64,7 +66,7 @@ class _AddArticleDialogState extends State<AddArticlePage> {
                 ),
                 child: GestureDetector(
                   onTap: () {
-                    context.read<HomeBloc>().add(PickImageEvent());
+                    context.getBloc<HomeBloc>().add(PickImageEvent());
                   },
                   child: (state is HomeLoadingState)
                       ? Center(child: CircularProgressIndicator())
@@ -155,7 +157,7 @@ class _AddArticleDialogState extends State<AddArticlePage> {
               ),
             ),
             SizedBox(width: 30),
-            BlocBuilder<HomeBloc, HomeState>(
+            MyBlocBuilder<HomeBloc, HomeState>(
               buildWhen: (previous, current) =>
                   previous.runtimeType != current.runtimeType,
               builder: (context, state) {
@@ -181,7 +183,7 @@ class _AddArticleDialogState extends State<AddArticlePage> {
                           isFromAPI: false,
                           publishedAt: DateTime.now().toString(),
                         );
-                        context.read<HomeBloc>().add(
+                        context.getBloc<HomeBloc>().add(
                               CreateNewArticle(
                                 createdArticle: newArticle,
                                 selectedCategory: selectedCategory,
