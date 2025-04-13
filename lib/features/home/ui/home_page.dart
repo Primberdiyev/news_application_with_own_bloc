@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:news_application/features/home/bloc/home_bloc.dart';
-import 'package:news_application/features/home/bloc/home_event.dart';
-import 'package:news_application/features/home/bloc/home_state.dart';
 import 'package:news_application/features/home/ui/category/bloc/category_bloc.dart';
 import 'package:news_application/features/home/ui/category/bloc/category_event.dart';
 import 'package:news_application/features/home/ui/category/category_news.dart';
@@ -9,6 +6,7 @@ import 'package:news_application/features/home/ui/country/bloc/country_bloc.dart
 import 'package:news_application/features/home/ui/country/bloc/country_event.dart';
 import 'package:news_application/features/home/ui/country/country_news.dart';
 import 'package:news_application/features/home/ui/profile/profile.dart';
+import 'package:news_application/features/home/ui/tesla_news/bloc/tesla_news_bloc.dart';
 import 'package:news_application/features/home/ui/tesla_news/tesla_news.dart';
 import 'package:news_application/features/home/widgets/filtered_by_widget.dart';
 import 'package:news_application/features/home/widgets/home_page_action_button.dart';
@@ -46,14 +44,14 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.only(left: 20, right: 20, top: 80),
             child: FilteredByWidget(),
           ),
-          MyBlocBuilder<HomeBloc, HomeState>(
+          MyBlocBuilder<TeslaNewsBloc, TeslaNewsState>(
             builder: (context, state) {
-              if (state is HomeErrorState) {
+              if (state is TeslaNewsErrorState) {
                 return Center(
                   child: Text(AppTexts.wentWrong),
                 );
               }
-              if (state is HomeSuccessState) {
+              if (state is TeslaNewsSucessState) {
                 return Expanded(
                   child: PageView(
                     controller: pageController,
@@ -91,7 +89,7 @@ class _HomePageState extends State<HomePage> {
                 IconButton(
                   onPressed: () {
                     pageController.jumpToPage(0);
-                    context.getBloc<HomeBloc>().add(GetTeslaNewEvent());
+                    context.getBloc<TeslaNewsBloc>().add(GetTeslaNewEvent());
                   },
                   icon: Icon(
                     Icons.search,

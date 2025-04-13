@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:news_application/features/home/bloc/home_bloc.dart';
-import 'package:news_application/features/home/bloc/home_event.dart';
-import 'package:news_application/features/home/bloc/home_state.dart';
+import 'package:news_application/features/home/ui/tesla_news/bloc/tesla_news_bloc.dart';
 import 'package:news_application/features/home/widgets/news_item.dart';
 import 'package:news_application/features/home/widgets/search_news.dart';
 import 'package:news_application/my_bloc/my_bloc_builder.dart';
@@ -12,9 +10,9 @@ class TeslaNews extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MyBlocBuilder<HomeBloc, HomeState>(
+    return MyBlocBuilder<TeslaNewsBloc, TeslaNewsState>(
       builder: (context, state) {
-        if (state is HomeSuccessState) {
+        if (state is TeslaNewsSucessState) {
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Column(
@@ -29,13 +27,13 @@ class TeslaNews extends StatelessWidget {
                       return NewsItem(
                         article: newData,
                         onEdit: (oldArticle, newArticle) =>
-                            context.getBloc<HomeBloc>().add(
+                            context.getBloc<TeslaNewsBloc>().add(
                                   EditNewsEvent(
                                       editedArticle: newArticle,
                                       lastArticle: oldArticle),
                                 ),
-                        onDelete: () => context.getBloc<HomeBloc>().add(
-                              DeleteNewsByIdEvent(article: newData),
+                        onDelete: () => context.getBloc<TeslaNewsBloc>().add(
+                              DeleteteslaNewsByIdEvent(article: newData),
                             ),
                       );
                     },

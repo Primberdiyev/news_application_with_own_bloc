@@ -13,22 +13,6 @@ class HomeBloc extends PrivateBloc<HomeEvent, HomeState> {
   @override
   void listener(HomeEvent event) {
     switch (event) {
-      case DeleteNewsByIdEvent():
-        deleteNewsById(event);
-        break;
-
-      case EditNewsEvent():
-        editNews(
-          event,
-        );
-        break;
-
-      case RefleshNewsEvent():
-        refleshNews(
-          event,
-        );
-        break;
-
       case PickImageEvent():
         pickImage(
           event,
@@ -52,18 +36,6 @@ class HomeBloc extends PrivateBloc<HomeEvent, HomeState> {
           event,
         );
         break;
-
-      case GetTeslaNewEvent():
-        getTeslaNews(
-          event,
-        );
-        break;
-
-      case FilterNewsEvent():
-        filterNews(
-          event,
-        );
-        break;
     }
   }
 
@@ -72,39 +44,6 @@ class HomeBloc extends PrivateBloc<HomeEvent, HomeState> {
   final defaultCountry = SortComponents.countryComponents.first;
   final defaultCategory = SortComponents.categories.first;
   final HiveDatabaseService hiveDatabaseService = HiveDatabaseService();
-
-  void deleteNewsById(
-    DeleteNewsByIdEvent event,
-  ) async {
-    databaseService.deleteNewsById(id: event.article.id);
-    if (state is HomeSuccessState) {
-      final currentState = state as HomeSuccessState;
-      final news = currentState.articles;
-      news.remove(event.article);
-      emit(currentState.copyWith(articles: news));
-    }
-  }
-
-  void editNews(
-    EditNewsEvent event,
-  ) async {
-    await databaseService.editNews(article: event.editedArticle);
-    if (state is HomeSuccessState) {
-      final currentState = state as HomeSuccessState;
-      final news = currentState.articles;
-      news[news.indexOf(event.lastArticle)] = event.editedArticle;
-      emit(currentState.copyWith(articles: news));
-    }
-  }
-
-  void refleshNews(
-    RefleshNewsEvent event,
-  ) async {
-    if (state is HomeSuccessState) {
-      await databaseService.clearDatabase();
-      add(GetTeslaNewEvent());
-    }
-  }
 
   void pickImage(PickImageEvent event) async {
     final currentState = state;
@@ -145,38 +84,11 @@ class HomeBloc extends PrivateBloc<HomeEvent, HomeState> {
   void changeSliderIndex(
     ChangeSlideIndexEvent event,
   ) {
-    final currentState = state as HomeSuccessState;
-    emit(currentState.copyWith(currentSlideIndex: event.slideIndex));
-  }
-
-  void getTeslaNews(
-    GetTeslaNewEvent event,
-  ) async {
-    emit(HomeLoadingState());
-
-    try {
-      final news = await newsRepositories.setAndGetNews(isTesla: true);
-
-      emit(HomeSuccessState(articles: news, originalArticles: news));
-    } catch (e) {
-      log('error on getting news by query $e');
-      emit(HomeErrorState(errorMessage: e.toString()));
-    }
-  }
-
-  void filterNews(
-    FilterNewsEvent event,
-  ) {
-    if (state is HomeSuccessState) {
-      final currentState = state as HomeSuccessState;
-      final news = currentState.originalArticles;
-
-      final filteredNews = (news ?? [])
-          .where((element) => (element.title ?? '')
-              .toLowerCase()
-              .contains(event.enteredWord.toLowerCase()))
-          .toList();
-      emit(currentState.copyWith(articles: filteredNews));
+    final currentState = state;
+    if (currentState is HomeSuccessState) {
+      emit(currentState.copyWith(currentSlideIndex: event.slideIndex));
+    } else {
+      emit(HomeSuccessState(currentSlideIndex: event.slideIndex));
     }
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_application/features/home/models/article_model.dart';
 import 'package:news_application/features/home/ui/country/bloc/country_bloc.dart';
 import 'package:news_application/features/home/ui/country/bloc/country_event.dart';
@@ -57,7 +56,7 @@ class _CountryNewsState extends State<CountryNews> {
                                       editedArticle: newArticle,
                                       lastArticle: oldArticle),
                                 ),
-                        onDelete: () => context.read<CountryBloc>().add(
+                        onDelete: () => context.getBloc<CountryBloc>().add(
                               DeleteCountryNewsByIdEvent(article: newData),
                             ),
                       );

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:news_application/features/home/bloc/home_bloc.dart';
-import 'package:news_application/features/home/bloc/home_state.dart';
+import 'package:news_application/features/home/ui/tesla_news/bloc/tesla_news_bloc.dart';
 import 'package:news_application/features/utils/app_images.dart';
 import 'package:news_application/features/utils/app_text_styles.dart';
 import 'package:news_application/features/utils/app_texts.dart';
@@ -18,9 +17,9 @@ class _FiltersWidgetState extends State<FilteredByWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return MyBlocBuilder<HomeBloc, HomeState>(
+    return MyBlocBuilder<TeslaNewsBloc, TeslaNewsState>(
       builder: (context, state) {
-        if (state is HomeSuccessState) {
+        if (state is TeslaNewsSucessState) {
           return Row(
             children: [
               Image.asset(

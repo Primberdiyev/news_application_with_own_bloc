@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:news_application/features/auth/bloc/auth_bloc.dart';
-import 'package:news_application/features/home/bloc/home_bloc.dart';
-import 'package:news_application/features/home/bloc/home_event.dart';
 import 'package:news_application/features/home/models/country_model.dart';
+import 'package:news_application/features/home/ui/tesla_news/bloc/tesla_news_bloc.dart';
 import 'package:news_application/features/routes/name_routes.dart';
 import 'package:news_application/features/utils/app_images.dart';
 import 'package:news_application/features/utils/sort_components.dart';
@@ -22,7 +21,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     context.getBloc<AuthBloc>().add(CheckUserAuth());
-    context.getBloc<HomeBloc>().add(GetTeslaNewEvent());
+    context.getBloc<TeslaNewsBloc>().add(GetTeslaNewEvent());
 
     super.initState();
   }

@@ -9,21 +9,6 @@ class FilterNewsEvent extends HomeEvent {
   final String enteredWord;
 }
 
-class DeleteNewsByIdEvent extends HomeEvent {
-  DeleteNewsByIdEvent({required this.article});
-  Article article;
-}
-
-class EditNewsEvent extends HomeEvent {
-  EditNewsEvent({
-    required this.editedArticle,
-    required this.lastArticle,
-  });
-  Article editedArticle;
-  Article lastArticle;
-}
-
-class RefleshNewsEvent extends HomeEvent {}
 
 class PickImageEvent extends HomeEvent {}
 
@@ -46,4 +31,4 @@ class ChangeSlideIndexEvent extends HomeEvent {
   int slideIndex;
 }
 
-class GetTeslaNewEvent extends HomeEvent {}
+//class GetTeslaNewEvent extends HomeEvent {}

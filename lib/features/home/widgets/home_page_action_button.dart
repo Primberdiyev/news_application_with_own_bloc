@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:news_application/features/home/bloc/home_bloc.dart';
-import 'package:news_application/features/home/bloc/home_event.dart';
+import 'package:news_application/features/home/ui/tesla_news/bloc/tesla_news_bloc.dart';
 import 'package:news_application/features/routes/name_routes.dart';
 import 'package:news_application/features/utils/app_colors.dart';
 import 'package:news_application/features/utils/app_images.dart';
@@ -37,7 +36,7 @@ class HomePageActionButton extends StatelessWidget {
             child: Icon(Icons.refresh),
             backgroundColor: Colors.white,
             onTap: () {
-              context.getBloc<HomeBloc>().add(RefleshNewsEvent());
+              context.getBloc<TeslaNewsBloc>().add(RefleshNewsEvent());
             },
           ),
         ],
